@@ -62,3 +62,17 @@ void DecodeEUC2D(const string path, vector<Coords> &instance)
 
     file.close();
 }
+double generateRandBetween(unsigned int &seed, double min_value, double max_value)
+{
+    mt19937 generator(seed);
+    uniform_real_distribution<double> distribution(min_value, max_value);
+    seed++;
+    return distribution(generator);
+}
+int generateIntRandBetween(unsigned int &seed, int min_value, int max_value)
+{
+    mt19937 generator(seed);
+    uniform_int_distribution<int> distribution(min_value, max_value);
+    seed++;
+    return distribution(generator);
+}

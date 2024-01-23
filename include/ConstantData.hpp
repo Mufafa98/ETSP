@@ -19,6 +19,15 @@ struct EngineGUIData
     string instance_name;
 };
 
+struct Parameters
+{
+    double temp_min;
+    double max_no_of_iterations;
+    double max_memory_size;
+    double number_of_trials;
+    double delta_prec;
+};
+
 struct Coords
 {
     double x;

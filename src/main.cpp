@@ -6,6 +6,8 @@
 #include "ConstantData.hpp"
 #include "Path.hpp"
 
+#include "SA.hpp"
+
 using namespace std;
 using namespace sf;
 
@@ -66,6 +68,15 @@ int main()
         cerr << "Error creating graphical thread" << endl;
         return 1;
     }
+
+    Parameters parameters;
+    parameters.temp_min = 0.01;
+    parameters.number_of_trials = 1000;
+    parameters.max_no_of_iterations = 1000;
+    parameters.max_memory_size = 10;
+    parameters.delta_prec = 0.001;
+
+    SA engine(parameters, data->instance_name.c_str());
 
     if (pthread_join(gui_thread_id, nullptr) != 0)
     {

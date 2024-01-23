@@ -5,9 +5,9 @@ LIBS := -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 all: build run
 
 build: 
-	@$(CC) $(CFLAGS) $(LIBS) -I./include/ ./src/*.cpp -o ./bin/exe/ECTS
+	@$(CC) $(CFLAGS) $(LIBS) -I./include/ ./src/*.cpp -o ./bin/exe/ETSP
 
 run:
-	@./bin/exe/ECTS
+	@./bin/exe/ETSP
 clean:
 	@rm -f server client
