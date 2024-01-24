@@ -7,6 +7,7 @@
 ## The Fitness Function
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The TSP problem stands in finding a path through all disponible cities that has a minimum distance. In order to be able to at least try to solve this problem we first need a fitness function:
 $$\sum_{i = 1}^{N - 1} d(c_i, c_{i+1}) + d(c_N, c_1)$$
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The above sum represents the cost of passing through a series of cities of $N$ cities exactly once and returning to the start city. Since we need our list to contain distinct cities, as we don't want to pass through a city twice, we will use a permutation of $N$ elements representing a way that we can pass through all cities. So we need to find a set $S$ such as the above presented sum in $S$ is minimal.
 
 ## The problem with the traditional representation
@@ -42,6 +43,7 @@ $$\sum_{i = 1}^{N - 1} d(c_i, c_{i+1}) + d(c_N, c_1)$$
 ## Simulated Annealing
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Simulated Annealing is one of the oldest metaheuristics in problem solving, its main objective being to generate random candidates in the search space and with a probability test being accepted or not. Its main advantage being the possibility to have a worse candidate in the next generation thus being able to escape 
 local optimum points.
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Below we have a pseudocode for a Simulated Annealing algorithm:
 ```c++
 t = 0;
@@ -61,12 +63,15 @@ while(!halting_criterion);
   
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In order to have an efficient Simulated Annealing algorithm we need to configure three main components: the temperature initialization process, the cooling schedule and the halting criterion.
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The initialization of the temperature is dictated by how diverse we want the candidates to be, if a lower temperature is chosen, a smaller number of candidates are selected in the next generation that might be worse that the current one, the opposite is true for a higher temperature. In order to be more precise in the initialization phase we will use the following function to calculate the temperature:
 $$t_0 = \Delta C \left(\ln\frac{m_2}{m_2n-(1-n)m_1}\right)^{-1}$$
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Note that $\Delta C$ represents the average fittness value for a number $N_{trials}$ of candidates. This average is then multiplied by the inverse of the natural logarithm of the raport between the number of candidates $m_2$ that lead to a worse result and the difference between the acceptance ratio $n$ multiplied with $m_2$ and the inverse of the acceptance ratio multiplied with the number of candidates $m_1$ that lead to a improvement to the current candidate.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In order to have a efficient convergence to an optimalsolution, it would be best to have a dynamic cooling strategy. In order to achive that, we will use a set of $N_{mem}$ past candidates on which we will apply the function:
 $$f(t)=t\left(1+\frac{\ln(1+\delta)t}{3\sigma(t)}\right)^{-1}$$
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Where the temperature in the next stage $f(t)$ will equal to the outcome of the current temperature $t$ multiplied by the inverse of the sum of $1$ and the raport between $t$ multiplied by the natural logarithm of $1$ and a small number $\delta$, that dictates how fast we want the temperature to decrease, and the product between $3$ and $\sigma(t)$ that represents the standard deviation of our set of past candidates, thus if the set of candidates is tends to be uniform, the temperature will decrease faster.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Halting criterion, in our implementation is represented by the temperature reaching a certain threshold named $T_{min}$. Note that all above formulas ware inspired by $^{[3][4][5]}$ and that the initialization was omited in the code.
@@ -74,6 +79,7 @@ $$f(t)=t\left(1+\frac{\ln(1+\delta)t}{3\sigma(t)}\right)^{-1}$$
 ## Genetic Algorithm
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Solving the TSP problem using a genetic algorithm is one of the most popular methods because it provides a good chance to get the best solution to an instance. Its main advantage is represented by the big population and the operators that act on it, therefore encouraging the best chromosomes to evolve and dominate the population.
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Below we have a pseudocode for a Genetic Algorithm:
 ```c++
 generation = 0;
@@ -88,8 +94,11 @@ while (stopping_criterion)
   
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The evaluation of the population is calculated by adding the distance between each two adjacent cities and between the start and the end city for each Chromosome.
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In order to get a better starting point, the initial population was initialized by a Nearest-Neighbor strategy, thus, selecting a random city, and from that we select the next city based on the shortest distance between them, this process is repeated for each city that is last in our chromosome until there is no other city to go to. This operation is needed because of the huge search space, therefore, helping the genetic algorithm to get closer to a optimal solution, rather than wasting time in a space far from the optim. Other worth mentioning strategies in initializing the population are: Greedy, Clarke-Wright and Christofides $^{[6]}$.
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Since in our implementation, both including the restrictions in representation and using specific operators such as OX and Swap mutation have failed to give satisfactory results, we have chosen to make some research in the Inver-Over operator proposed by Guo Tao and Zbigniew Michalewicz in their paper$^{[7]}$. The main idea of this operator is to automatically balance the exploration and exploitation.
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Below is presented a simplified version of it:
 ```c++
 for(individual S in P)
@@ -108,7 +117,10 @@ while(true);
 if(Eval(S_prim) <= Eval(S))
 	S = S_prim;
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The inversion is made from the position of city c excluding to the position of city c\_prim including. Therefore, we can represent the chromosome without any restrictions in the representation, because when we apply the operator, a chromosome is modified considering only its data, therefore we could not break the properties of a permutation if the chromosome initially was a permutation.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The inversion is made from the position of city c excluding to the position of city c\_prim including. Therefore, we can represent the chromosome without any restrictions in the representation, because when we apply the 
+operator, a chromosome is modified considering only its data, therefore we could not break the properties of a permutation if the chromosome initially was a permutation.
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  One noticeable problem in this operator is that it eliminates all the variation in the population, therefore lowering the overall performance of the genetic algorithm. One way to fix this was proposed by some researchers in $^{[8][9]}$. The main idea in those is to include a probability by which the city is changed in the end and on the selected individual should be applied a mutation before doing any other operation with it. So below we've modified the above algorithm to include those improvements:
 ```c++
 for(individual S in P)
@@ -130,9 +142,12 @@ while(true);
 if(Eval(S_prim) <= Eval(S))
 S = S_prim
 ```
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; For ease of use we will notate p as $p_{io}$, p\_prim $p_{mut}$ and p\_sec as $p_{cc}$. The $p_{io}$ and $p_{mut}$ are given as parameters, but it would be better if we would change the city more frequently at the start and then less and less while we approach the end of the algorithm, this is being achieved by using the following formula:
 $$p_{cc} = e^{\log(\frac{p_{cc-max} - p_{cc-min}}{N})} \cdot generation$$
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Where $p_{cc-max}$ and $p_{cc-min}$ represent the maximum and the minimum value of the $p_{cc}$ parameters and $N$ represents the maximum number of generations that the algorithm will run for.
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  The mutation operator that was used in this algorithm is 2-Opt that was described in $^{[10]}$. The main idea of this mutation operator is to cut two bridge between four cities and rewire them in other order that they were initially, therefore introducing more diversity in the population.
 
 ## References
