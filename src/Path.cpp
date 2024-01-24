@@ -10,8 +10,19 @@ Path::Path(const char *instance)
     DecodeEUC2D(path, temp_pos);
     double max_x = numeric_limits<double>::min();
     double max_y = numeric_limits<double>::min();
+    double min_x = numeric_limits<double>::max();
+    double min_y = numeric_limits<double>::max();
     for (size_t i = 0; i < temp_pos.size(); i++)
     {
+        if (temp_pos[i].x < min_x)
+            min_x = temp_pos[i].x;
+        if (temp_pos[i].y < min_y)
+            min_y = temp_pos[i].y;
+    }
+    for (size_t i = 0; i < temp_pos.size(); i++)
+    {
+        temp_pos[i].x -= min_x;
+        temp_pos[i].y -= min_y;
         if (temp_pos[i].x > max_x)
             max_x = temp_pos[i].x;
         if (temp_pos[i].y > max_y)
@@ -42,12 +53,17 @@ Path::Path(const char *instance)
 void Path::UpdatePermutation(const vector<unsigned int> &permutation, const unsigned int &permutation_size)
 {
     Line line;
-    for (size_t i = 1; i < permutation_size; i++)
+    lines.clear();
+    size_t i;
+    for (i = 1; i < permutation_size; i++)
     {
         line.Between(circles[permutation[i - 1]].getPosition() + Vector2f(5, 5),
                      circles[permutation[i]].getPosition() + Vector2f(5, 5));
         lines.push_back(line);
     }
+    line.Between(circles[permutation[i - 1]].getPosition() + Vector2f(5, 5),
+                 circles[permutation[0]].getPosition() + Vector2f(5, 5));
+    lines.push_back(line);
 }
 
 void Path::Draw(RenderWindow &window)

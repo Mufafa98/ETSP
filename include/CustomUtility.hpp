@@ -16,3 +16,4 @@ void DecodeEUC2D(const string path, vector<Coords> &instance);
 
 double generateRandBetween(unsigned int &seed, double min_value, double max_value);
 int generateIntRandBetween(unsigned int &seed, int min_value, int max_value);
+bool Exists(const unsigned int &data, const vector<int> &in, const unsigned int &start, const unsigned int &end);
