@@ -76,3 +76,8 @@ int generateIntRandBetween(unsigned int &seed, int min_value, int max_value)
     seed++;
     return distribution(generator);
 }
+bool Exists(const unsigned int &data, const vector<int> &in, const unsigned int &start, const unsigned int &end)
+{
+    auto it = find(in.begin() + start, in.begin() + end, data);
+    return it != in.begin() + end;
+}

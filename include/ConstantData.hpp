@@ -5,8 +5,8 @@
 
 using namespace std;
 
-#define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 1000
+#define WINDOW_WIDTH 600
+#define WINDOW_HEIGHT 600
 #define WINDOW_TITLE "ETSP"
 
 struct EngineGUIData
@@ -21,6 +21,15 @@ struct EngineGUIData
 
 struct Parameters
 {
+    // GA parameters
+    double max_no_of_generations;
+    double pop_size;
+    double selection_preasure;
+    double selection_by_elitism;
+    double mutation_rate;
+    double crossover_rate;
+    double random_inversion;
+    // SA parameters
     double temp_min;
     double max_no_of_iterations;
     double max_memory_size;
