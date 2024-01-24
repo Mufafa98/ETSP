@@ -2,7 +2,7 @@
 ## About
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The Traveling Salesman Problem is well known for its computational complexity, motivating scientists for decades to innovateand redefine problem-solving approaches. Given a set of $n$ citiesand the distance between each pair of cities, the goal is to visit each city once and returning to the start city with a minimum distance.This problem is modeled in graph theory with the help of vertices and edges. Each city being represented through a node in the graph, and the way to other cities through its edges.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The goal of this project is to build a genetic algorithm alongside a simulated annealing algorithm form scratch and run them on TSP instances from TSPLib$^{[1]}$ that use EUC-2D$^{[2]}$ as encoding. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The goal of this project is to build a genetic algorithm alongside a simulated annealing algorithm form scratch and run them on TSP instances from TSPLib $^{[1]}$ that use EUC-2D $^{[2]}$ as encoding. 
 
 ## The Fitness Function
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The TSP problem stands in finding a path through all disponible cities that has a minimum distance. In order to be able to at least try to solve this problem we first need a fitness function:
